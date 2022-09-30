@@ -1,0 +1,6 @@
+2022-09-27 16:50:29 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "CONTEXT CHARACTER VARYING(255)": "U&'\\000d\\000a\\000d\\000aAnguttara-Nikaya of the Sutta-Pitaka,\\000d\\000aPart I. Ek... (503261)"; SQL statement:
+insert into sutra (context, name, id) values (?, ?, ?) [22001-214]
+2022-09-27 16:50:29 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "CONTEXT CHARACTER VARYING(255)": "U&'\\000d\\000a\\000d\\000aAnguttara-Nikaya of the Sutta-Pitaka,\\000d\\000aPart III. ... (693538)"; SQL statement:
+insert into sutra (context, name, id) values (?, ?, ?) [22001-214]
