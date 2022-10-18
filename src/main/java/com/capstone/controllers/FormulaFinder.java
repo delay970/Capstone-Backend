@@ -8,79 +8,71 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.capstone.models.NGram;
-import com.capstone.models.Sutra;
+import com.capstone.models.Text;
 import com.capstone.services.FileCleanerService;
 import com.capstone.services.FileHandlerService;
 import com.capstone.services.FormulaFinderService;
-import com.capstone.services.SutraService;
-
+import com.capstone.services.TextService;
 
 @RestController
 @RequestMapping("formula")
-@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000"})
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000" })
 public class FormulaFinder {
 
 	@Autowired
 	FileHandlerService fileHandlerService;
-	
+
 	@Autowired
 	FormulaFinderService formulaFinderService;
-	
+
 	@Autowired
 	FileCleanerService fileCleanerService;
-	
+
 	@Autowired
-	SutraService sutraService;
-	
-	@GetMapping("/{id1}/{id2}")
-    public ResponseEntity<Object[]> findFormulas(@PathVariable int id1, @PathVariable int id2){
+	TextService textService;
 
-    	Sutra sutra1 = sutraService.findById(id1).get();
-    	Sutra sutra2 = sutraService.findById(id2).get();
-		
-		String context = fileCleanerService.cleanContext(sutra1.context);
-		String context2 = fileCleanerService.cleanContext(sutra2.context);
+	@PostMapping("/{id1}/{id2}")
+	public ResponseEntity<Object[]> findFormulas(@PathVariable int id1, @PathVariable int id2,
+			@RequestBody int minSize) {
 
-		Map<String, NGram> map = formulaFinderService.findFormulas(context, context2, 3);
-		//Map<String, NGram> map = formulaFinder.findRepetitions(context, 3);
-		
+		Text text1 = textService.findById(id1).get();
+		Text text2 = textService.findById(id2).get();
+
+		String context = fileCleanerService.cleanContext(text1.context);
+		String context2 = fileCleanerService.cleanContext(text2.context);
+
+		Map<String, NGram> map = formulaFinderService.findFormulas(context, context2, minSize);
+
 		List<NGram> results = new ArrayList<>(map.values());
 		Collections.sort(results, Collections.reverseOrder());
-		
+
 		formulaFinderService.cleanResults(results);
-		
-		Object[] temp = results.toArray();
-		
-		System.out.println("formulas found");
-		
-        return ResponseEntity.ok(temp);
-    }
-    
-    @GetMapping("/{id}")
-    public ResponseEntity<Object[]> findRepatitions(@PathVariable int id){
 
-    	Sutra sutra = sutraService.findById(id).get();
-		
-		String context = fileCleanerService.cleanContext(sutra.context);
+		return ResponseEntity.ok(results.toArray());
+	}
 
-		Map<String, NGram> map = formulaFinderService.findRepetitions(context, 3);
-		
+	@PostMapping("/{id}")
+	public ResponseEntity<Object[]> findRepatitions(@PathVariable int id, @RequestBody int minSize) {
+
+		Text text = textService.findById(id).get();
+
+		String context = fileCleanerService.cleanContext(text.context);
+
+		Map<String, NGram> map = formulaFinderService.findRepetitions(context, minSize);
+
 		List<NGram> results = new ArrayList<>(map.values());
 		Collections.sort(results, Collections.reverseOrder());
-		
+
 		formulaFinderService.cleanResults(results);
-		
-		Object[] temp = results.toArray();
-		
-		System.out.println("formulas found");
-		
-        return ResponseEntity.ok(temp);
-    }
-	
+
+		return ResponseEntity.ok(results.toArray());
+	}
+
 }

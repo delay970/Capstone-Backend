@@ -131,7 +131,7 @@ public class FormulaFinderService {
 
 				// this checks if the current result was already eliminated and ignores it
 				// if it was.
-				if (result.getUnique() == 0) {
+				if (result.getUnique() <= 0) {
 					continue;
 				}
 
@@ -155,7 +155,7 @@ public class FormulaFinderService {
 
 		}
 		// remove false positive results
-		results.removeIf(ngram -> ngram.getUnique() == 0);
+		results.removeIf(ngram -> ngram.getUnique() <= 0);
 	}
 
 }

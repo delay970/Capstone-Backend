@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.capstone.models.Sutra;
+import com.capstone.models.Text;
+import com.capstone.services.FileCleanerService;
 import com.capstone.services.FileHandlerService;
-import com.capstone.services.SutraService;
+import com.capstone.services.TextService;
 
 
 
@@ -26,13 +27,12 @@ public class FileHandler {
 	FileHandlerService fileHandlerService;
 	
 	@Autowired
-	SutraService sutraService;
+	TextService textService;
 	
     @PostMapping("/{name}")
     public ResponseEntity<Boolean> SaveFile(@PathVariable("name") String name, @RequestBody String fileBody){        
-        fileHandlerService.writeFile(fileBody, name);
-        Sutra sutra = new Sutra(name, fileBody);
-        sutraService.storeSutra(sutra);
+        Text text = new Text(name, fileBody);
+        textService.storeText(text);
         return ResponseEntity.ok(true);
     }
     

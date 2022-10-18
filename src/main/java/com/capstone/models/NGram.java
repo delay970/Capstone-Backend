@@ -35,7 +35,7 @@ public class NGram implements Comparable<NGram> {
 	@JsonIgnore
 	@ManyToMany
 	@JoinTable
-	public Set<Sutra> sutra;
+	public Set<Text> text;
 
 	public NGram() {
 		super();
