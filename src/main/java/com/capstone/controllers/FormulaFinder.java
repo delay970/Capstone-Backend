@@ -45,8 +45,8 @@ public class FormulaFinder {
 		Text text1 = textService.findById(id1).get();
 		Text text2 = textService.findById(id2).get();
 
-		String context = fileCleanerService.cleanContext(text1.context);
-		String context2 = fileCleanerService.cleanContext(text2.context);
+		String context = fileCleanerService.cleanContext(text1.context, text1.getProfile());
+		String context2 = fileCleanerService.cleanContext(text2.context, text2.getProfile());
 
 		Map<String, NGram> map = formulaFinderService.findFormulas(context, context2, minSize);
 
@@ -63,7 +63,7 @@ public class FormulaFinder {
 
 		Text text = textService.findById(id).get();
 
-		String context = fileCleanerService.cleanContext(text.context);
+		String context = fileCleanerService.cleanContext(text.context, text.getProfile());
 
 		Map<String, NGram> map = formulaFinderService.findRepetitions(context, minSize);
 

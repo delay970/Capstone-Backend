@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -27,22 +28,27 @@ public class Text {
     @JsonIgnore
     @ManyToMany(mappedBy = "text")
     public Set<NGram> ngram;
+    
+    @ManyToOne
+    public FileCleanerProfile profile;
 
 	public Text() {
 		super();
 	}
 	
-	public Text(String name, String context) {
+	public Text(String name, String context, FileCleanerProfile profile) {
 		super();
 		this.name = name;
 		this.context = context;
+		this.profile = profile;
 	}
 	
-	public Text(int id, String name, String context) {
+	public Text(int id, String name, String context, FileCleanerProfile profile) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.context = context;
+		this.profile = profile;
 	}
 
 
@@ -61,6 +67,30 @@ public class Text {
 
 	public void setContext(String context) {
 		this.context = context;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Set<NGram> getNgram() {
+		return ngram;
+	}
+
+	public void setNgram(Set<NGram> ngram) {
+		this.ngram = ngram;
+	}
+
+	public FileCleanerProfile getProfile() {
+		return profile;
+	}
+
+	public void setProfile(FileCleanerProfile profile) {
+		this.profile = profile;
 	}
 
 	@Override
